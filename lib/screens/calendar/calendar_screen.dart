@@ -429,13 +429,13 @@ class _CalendarScreenState extends State<CalendarScreen>
                                   child: SvgPicture.asset(
                                     'assets/icons/birthday.svg',
                                   )),
-                              trailing: Text('All-Day',
-                                  style: defaultTheme.textTheme.titleSmall),
                               title: Text(
                                 'Wish them a Happy Birthday!',
-                                style: defaultTheme.textTheme.titleMedium,
+                                style: defaultTheme.textTheme.titleSmall,
                                 maxLines: 3,
                               ),
+                              trailing: Text('All-Day',
+                                  style: defaultTheme.textTheme.titleSmall?.copyWith(fontSize: 12)),
                               backgroundColor: Colors.transparent,
                               collapsedIconColor: Colors.transparent,
                               collapsedBackgroundColor: Colors.transparent,
