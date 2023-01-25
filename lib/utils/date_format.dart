@@ -9,7 +9,7 @@ String formatDateToDDMMYYYY(String date) {
 
 String formatDateToMMMMYYYY(String date) {
   DateTime dateToConvert = DateTime.parse(date);
-  final DateFormat formatter = DateFormat('MMMMyyyy');
+  final DateFormat formatter = DateFormat('MMMM yyyy');
   final String formatted = formatter.format(dateToConvert);
   return formatted;
 }
@@ -43,6 +43,13 @@ String dateFormat2 = "yyyy-MM-dd";
 String formatDateToDDEEEE(String date) {
   DateTime dateToConvert = DateTime.parse(date);
   final DateFormat formatter = DateFormat('dd. EEEE');
+  final String formatted = formatter.format(dateToConvert);
+  return formatted;
+}
+
+String formatDateToEEEEdd(String date) {
+  DateTime dateToConvert = DateTime.parse(date);
+  final DateFormat formatter = DateFormat('EEEE dd');
   final String formatted = formatter.format(dateToConvert);
   return formatted;
 }
