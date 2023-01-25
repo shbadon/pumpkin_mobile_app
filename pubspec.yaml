@@ -48,7 +48,7 @@ dependencies:
   google_fonts: ^3.0.1
   google_sign_in: ^5.4.2
   image_picker: ^0.8.6
-  intl: ^0.18.0
+  intl: ^0.17.0
   local_auth: ^2.1.2
   lottie: ^2.0.0
   qr_flutter: ^4.0.0
@@ -59,11 +59,11 @@ dependencies:
   vrouter: ^1.2.1
   flutter_cupertino_datetime_picker: ^3.0.0
   pattern_formatter: ^2.0.0
-  table_calendar: ^3.0.9
+  table_calendar: ^3.0.8
 
 
-dependency_overrides:
-  intl: ^0.17.0
+#dependency_overrides:
+#  intl: ^0.17.0
 
 dev_dependencies:
   build_runner: ^2.3.2

@@ -49,6 +49,7 @@ String calendarIconSelected = 'assets/icons/calendar_icon_white.svg';
 String profileIcon = 'assets/icons/profile_icon.svg';
 String profileIconSelected = 'assets/icons/profile_icon_white.svg';
 String seedStatus = 'assets/images/Seed-status.png';
+String calendarIconWithDot = 'assets/icons/calendar_icon_with_dot.svg';
 // Bottom tab icon ends
 
 class StorageKeys {
