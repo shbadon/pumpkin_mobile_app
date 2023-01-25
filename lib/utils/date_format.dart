@@ -7,6 +7,13 @@ String formatDateToDDMMYYYY(String date) {
   return formatted;
 }
 
+String formatDateToMMMMYYYY(String date) {
+  DateTime dateToConvert = DateTime.parse(date);
+  final DateFormat formatter = DateFormat('MMMMyyyy');
+  final String formatted = formatter.format(dateToConvert);
+  return formatted;
+}
+
 
 String formatDateTimeToDDMMYYYYHHMM(String date) {
   DateTime dateToConvert = DateTime.parse(date);

@@ -6,6 +6,7 @@ import 'package:pumpkin/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pumpkin/utils/strings.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:pumpkin/utils/date_format.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({Key? key}) : super(key: key);
@@ -28,6 +29,9 @@ class _CalendarScreenState extends State<CalendarScreen>
   late Animation<double> _animation;
   late AnimationController _animationController;
   PageController pageController = PageController();
+  DateTime focusedDay = DateTime.now();
+  ValueNotifier<String> headerText =
+      ValueNotifier(formatDateToMMMMYYYY(DateTime.now().toString()));
 
   @override
   void initState() {
@@ -102,20 +106,17 @@ class _CalendarScreenState extends State<CalendarScreen>
     }
   }
 
-  DateTime focusedDay = DateTime.now();
-
   @override
   Widget build(BuildContext context) {
-    String headerText = DateFormat.MMMMEEEEd().format(focusedDay);
     return Scaffold(
         backgroundColor: AppColors.setupProfileBG,
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                const SizedBox(height: 25),
-                Row(
+          child: Column(
+            children: [
+              const SizedBox(height: 25),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
@@ -133,8 +134,13 @@ class _CalendarScreenState extends State<CalendarScreen>
                         size: 24,
                       ),
                     ),
-                    Text('December 2022',
-                        style: defaultTheme.textTheme.subtitle1),
+                    ValueListenableBuilder(
+                      valueListenable: headerText,
+                      builder: (context, String value, child) {
+                        return Text(value,
+                            style: defaultTheme.textTheme.subtitle1);
+                      },
+                    ),
                     InkWell(
                       onTap: () {
                         pageController.nextPage(
@@ -151,80 +157,81 @@ class _CalendarScreenState extends State<CalendarScreen>
                     ),
                   ],
                 ),
-                const SizedBox(height: 18),
-                tabWidget(),
-                calenderWidget(),
-                const SizedBox(height: 8.0),
-                eventWidget(),
-                const SizedBox(height: 8.0),
-              ],
-            ),
+              ),
+              const SizedBox(height: 18),
+              tabWidget(),
+              const SizedBox(height: 16),
+              calenderWidget(),
+              const SizedBox(height: 8.0),
+              eventWidget(),
+              const SizedBox(height: 8.0),
+            ],
           ),
         ));
   }
 
   Widget tabWidget() {
-    return Row(
-      children: [
-        SvgPicture.asset(
-          calendarIconWithDot,
-          height: 24,
-          width: 24,
-        ),
-        SizedBox(width: 24),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: AppColors.white.withOpacity(0.6),
-                border: Border.all(
-                  color: AppColors.white,
-                )),
-            child: TabBar(
-                unselectedLabelColor: AppColors.black80,
-                indicatorColor: AppColors.white,
-                controller: tabController,
-                indicatorSize: TabBarIndicatorSize.tab,
-
-                indicator: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                labelPadding: EdgeInsets.zero,
-
-
-                tabs: [
-                  Tab(
-                    iconMargin: EdgeInsets.zero,
-                    child: Text(
-                      'Day',
-                      style: defaultTheme.textTheme.bodyText2?.copyWith(
-                        color: _getColor(0),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    iconMargin: EdgeInsets.zero,
-                    child: Text(
-                      'Week',
-                      style: defaultTheme.textTheme.bodyText2?.copyWith(
-                        color: _getColor(1),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    iconMargin: EdgeInsets.zero,
-                    child: Text(
-                      'Month',
-                      style: defaultTheme.textTheme.bodyText2?.copyWith(
-                        color: _getColor(2),
-                      ),
-                    ),
-                  ),
-                ]),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            calendarIconWithDot,
+            height: 24,
+            width: 24,
           ),
-        ),
-      ],
+          const SizedBox(width: 24),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppColors.white.withOpacity(0.6),
+                  border: Border.all(
+                    color: AppColors.white,
+                  )),
+              child: TabBar(
+                  unselectedLabelColor: AppColors.black80,
+                  indicatorColor: AppColors.white,
+                  controller: tabController,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicator: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  labelPadding: EdgeInsets.zero,
+                  tabs: [
+                    Tab(
+                      iconMargin: EdgeInsets.zero,
+                      child: Text(
+                        'Day',
+                        style: defaultTheme.textTheme.bodyText2?.copyWith(
+                          color: _getColor(0),
+                        ),
+                      ),
+                    ),
+                    Tab(
+                      iconMargin: EdgeInsets.zero,
+                      child: Text(
+                        'Week',
+                        style: defaultTheme.textTheme.bodyText2?.copyWith(
+                          color: _getColor(1),
+                        ),
+                      ),
+                    ),
+                    Tab(
+                      iconMargin: EdgeInsets.zero,
+                      child: Text(
+                        'Month',
+                        style: defaultTheme.textTheme.bodyText2?.copyWith(
+                          color: _getColor(2),
+                        ),
+                      ),
+                    ),
+                  ]),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -236,25 +243,46 @@ class _CalendarScreenState extends State<CalendarScreen>
   }
 
   Widget calenderWidget() {
-    return TableCalendar(
-      firstDay: DateTime.utc(2010, 10, 20),
-      lastDay: DateTime.utc(2040, 10, 20),
-      focusedDay: focusedDay,
-      daysOfWeekVisible: true,
-      sixWeekMonthsEnforced: false,
-      shouldFillViewport: false,
-      onCalendarCreated: (controller) => pageController = controller,
-      headerVisible: false,
-
-
-      calendarStyle: CalendarStyle(
-          todayTextStyle: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 17),
+      padding: const EdgeInsets.only(left: 8, right: 8, top: 26, bottom: 8),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16), color: AppColors.white),
+      child: TableCalendar(
+        firstDay: DateTime.utc(2010, 10, 20),
+        lastDay: DateTime.utc(2040, 10, 20),
+        focusedDay: focusedDay,
+        daysOfWeekVisible: true,
+        sixWeekMonthsEnforced: false,
+        shouldFillViewport: false,
+        onCalendarCreated: (controller) => pageController = controller,
+        headerVisible: false,
+        availableGestures: AvailableGestures.all,
+        onPageChanged: (focusedDay) {
+          headerText.value = formatDateToMMMMYYYY(focusedDay.toString());
+        },
+        // selectedDayPredicate: (day) {
+        //   return day;
+        // },
+        calendarStyle: CalendarStyle(
+          todayTextStyle: defaultTheme.textTheme.bodyText1!
+              .copyWith(color: AppColors.black80),
+          todayDecoration: BoxDecoration(
+            color: AppColors.orange.withOpacity(0.19),
+            shape: BoxShape.circle,
+          ),
+          isTodayHighlighted: true,
+        ),
+        onDaySelected: (selectedDay, focusedDay) {
+          print(selectedDay);
+          print(focusedDay);
+        },
+      ),
     );
   }
 
   Widget eventWidget() {
-    return  Expanded(
+    return Expanded(
       child: ValueListenableBuilder<List<Event>>(
         valueListenable: _selectedEvents,
         builder: (context, value, _) {
@@ -281,5 +309,4 @@ class _CalendarScreenState extends State<CalendarScreen>
       ),
     );
   }
-
 }
