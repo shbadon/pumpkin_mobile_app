@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pumpkin/theme.dart';
 import 'package:pumpkin/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,10 +18,11 @@ class _CalendarScreenState extends State<CalendarScreen>
   late TabController tabController;
   late Animation<double> _animation;
   late AnimationController _animationController;
+  PageController pageController = PageController();
 
   @override
   void initState() {
-    tabController = TabController(initialIndex: 2,length: 3, vsync: this)
+    tabController = TabController(initialIndex: 2, length: 3, vsync: this)
       ..addListener(() {
         setState(() {});
       });
@@ -35,8 +37,11 @@ class _CalendarScreenState extends State<CalendarScreen>
     super.initState();
   }
 
+  DateTime focusedDay = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
+    String headerText = DateFormat.MMMMEEEEd().format(focusedDay);
     return Scaffold(
         backgroundColor: AppColors.setupProfileBG,
         body: SafeArea(
@@ -47,21 +52,40 @@ class _CalendarScreenState extends State<CalendarScreen>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(
-                    Icons.arrow_back_ios_sharp,
-                    color: AppColors.darkIconcolor,
-                    size: 24,
+                  InkWell(
+                    onTap: () {
+                      pageController.previousPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOut,
+                      );
+                      focusedDay =
+                          focusedDay.subtract(const Duration(days: 30));
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_ios_sharp,
+                      color: AppColors.darkIconcolor,
+                      size: 24,
+                    ),
                   ),
                   Text('December 2022',
                       style: defaultTheme.textTheme.subtitle1),
-                  const Icon(
-                    Icons.arrow_forward_ios_sharp,
-                    color: AppColors.darkIconcolor,
-                    size: 24,
+                  InkWell(
+                    onTap: () {
+                      pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOut,
+                      );
+                      focusedDay = focusedDay.add(const Duration(days: 30));
+                    },
+                    child: const Icon(
+                      Icons.arrow_forward_ios_sharp,
+                      color: AppColors.darkIconcolor,
+                      size: 24,
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height:18),
+              SizedBox(height: 18),
               tabWidget(),
               calenderWidget(),
             ],
@@ -77,7 +101,7 @@ class _CalendarScreenState extends State<CalendarScreen>
           height: 24,
           width: 24,
         ),
-        SizedBox(width:24),
+        SizedBox(width: 24),
         Expanded(
           child: Container(
             decoration: BoxDecoration(
@@ -91,21 +115,18 @@ class _CalendarScreenState extends State<CalendarScreen>
                 indicatorColor: AppColors.white,
                 controller: tabController,
                 indicatorSize: TabBarIndicatorSize.tab,
-
                 indicator: BoxDecoration(
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 labelPadding: EdgeInsets.zero,
-
-
                 tabs: [
                   Tab(
                     iconMargin: EdgeInsets.zero,
                     child: Text(
                       'Day',
                       style: defaultTheme.textTheme.bodyText2?.copyWith(
-                        color:_getColor(0),
+                        color: _getColor(0),
                       ),
                     ),
                   ),
@@ -114,7 +135,7 @@ class _CalendarScreenState extends State<CalendarScreen>
                     child: Text(
                       'Week',
                       style: defaultTheme.textTheme.bodyText2?.copyWith(
-                        color:_getColor(1),
+                        color: _getColor(1),
                       ),
                     ),
                   ),
@@ -123,7 +144,7 @@ class _CalendarScreenState extends State<CalendarScreen>
                     child: Text(
                       'Month',
                       style: defaultTheme.textTheme.bodyText2?.copyWith(
-                        color:_getColor(2),
+                        color: _getColor(2),
                       ),
                     ),
                   ),
@@ -141,18 +162,21 @@ class _CalendarScreenState extends State<CalendarScreen>
     return AppColors.black80;
   }
 
-    Widget calenderWidget(){
-        return    TableCalendar(
-          firstDay: DateTime.utc(2010, 10, 20),
-          lastDay: DateTime.utc(2040, 10, 20),
-          focusedDay: DateTime.now(),
-          headerVisible: true,
-          daysOfWeekVisible: true,
-          sixWeekMonthsEnforced: true,
-          shouldFillViewport: false,
-          headerStyle: HeaderStyle(titleTextStyle: TextStyle(fontSize: 20, color: Colors.deepPurple, fontWeight: FontWeight.w800)),
-          calendarStyle: CalendarStyle(todayTextStyle: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
-        );
-      }
+  Widget calenderWidget() {
+    return TableCalendar(
+      firstDay: DateTime.utc(2010, 10, 20),
+      lastDay: DateTime.utc(2040, 10, 20),
+      focusedDay: focusedDay,
+      daysOfWeekVisible: true,
+      sixWeekMonthsEnforced: false,
+      shouldFillViewport: false,
+      onCalendarCreated: (controller) => pageController = controller,
+      headerVisible: false,
 
+
+      calendarStyle: CalendarStyle(
+          todayTextStyle: TextStyle(
+              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+    );
+  }
 }
