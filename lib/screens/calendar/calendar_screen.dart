@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pumpkin/screens/calendar/calendar_utils.dart';
-import 'package:intl/intl.dart';
 import 'package:pumpkin/theme.dart';
 import 'package:pumpkin/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -114,6 +113,30 @@ class _CalendarScreenState extends State<CalendarScreen>
     }
   }
 
+  _pickDate() async {
+    final pickDate = await showDatePicker(
+      context: context,
+      initialDate: focusedDay,
+      firstDate: DateTime.utc(2010, 10, 20),
+      lastDate: DateTime.utc(2040, 10, 20),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: AppColors.orange,
+              onPrimary: AppColors.white,
+              onSurface: AppColors.black80,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (pickDate != null) {
+      selectedDay = pickDate;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,10 +206,13 @@ class _CalendarScreenState extends State<CalendarScreen>
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-          SvgPicture.asset(
-            calendarIconWithDot,
-            height: 24,
-            width: 24,
+          InkWell(
+            onTap: _pickDate,
+            child: SvgPicture.asset(
+              calendarIconWithDot,
+              height: 24,
+              width: 24,
+            ),
           ),
           const SizedBox(width: 24),
           Expanded(
@@ -273,8 +299,13 @@ class _CalendarScreenState extends State<CalendarScreen>
       child: TableCalendar(
         firstDay: DateTime.utc(2010, 10, 20),
         lastDay: DateTime.utc(2040, 10, 20),
-        eventLoader:(day) {
-          return [day];
+        eventLoader: (day) {
+          final dates = [1, 2, 8, 7, 3, 6, 8, 21, 30];
+          if (dates.contains(day.day)) {
+            return [day];
+          }
+
+          return [];
         },
         focusedDay: focusedDay,
         daysOfWeekVisible: true,
@@ -287,6 +318,10 @@ class _CalendarScreenState extends State<CalendarScreen>
           headerText.value = formatDateToMMMMYYYY(focusedDay.toString());
         },
         calendarStyle: CalendarStyle(
+          markerDecoration: const BoxDecoration(
+            color: AppColors.orange,
+            shape: BoxShape.circle,
+          ),
           todayTextStyle: defaultTheme.textTheme.bodyText1!
               .copyWith(color: AppColors.black80),
           todayDecoration: BoxDecoration(
@@ -354,6 +389,10 @@ class _CalendarScreenState extends State<CalendarScreen>
           weekendTextStyle: defaultTheme.textTheme.bodyText2!
               .copyWith(color: AppColors.textFieldTitleColor),
           isTodayHighlighted: true,
+          markerDecoration: const BoxDecoration(
+            color: AppColors.orange,
+            shape: BoxShape.circle,
+          ),
         ),
         selectedDayPredicate: (day) {
           return isSameDay(
@@ -366,6 +405,14 @@ class _CalendarScreenState extends State<CalendarScreen>
             this.selectedDay = selectedDay;
             this.focusedDay = selectedDay;
           });
+        },
+        eventLoader: (day) {
+          final dates = [1, 2, 8, 7, 3, 6, 8, 21, 30, 28];
+          if (dates.contains(day.day)) {
+            return [day];
+          }
+
+          return [];
         },
       ),
     );
