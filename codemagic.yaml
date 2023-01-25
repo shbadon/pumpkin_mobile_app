@@ -1,0 +1,105 @@
+workflows:
+  android:
+    name: Android Application Workflow
+    max_build_duration: 60
+    environment:
+      flutter: 3.3.8
+    scripts:
+      - name: Build .apk
+        script: flutter build apk
+    artifacts:
+      - build/**/outputs/apk/**/*.apk
+      # - build/**/outputs/bundle/**/*.aab
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: dev
+          include: true
+      cancel_previous_builds: true
+    publishing:
+      email:
+        recipients:
+          - nilotpal@digitalprizm.net
+      # notify:
+      #   success: true
+      #   failure: true
+
+  ios:
+    name: iOS Application Workflow
+    max_build_duration: 60
+    environment:
+      flutter: 3.3.8
+    scripts:
+      - name: Build .ipa
+        script: flutter build ios
+    artifacts:
+      - build/ios/ipa/*.ipa
+      # - /tmp/xcodebuild_logs/*.log
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: dev
+          include: true
+      cancel_previous_builds: true
+    publishing:
+      # app_store_connect:
+      #   api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+      #   key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+      #   issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+      #   submit_to_testflight: true
+      email:
+        recipients:
+          - nilotpal@digitalprizm.net
+      # notify:
+      #   success: true
+      #   failure: true
+
+  # default-workflow:
+  #   name: Default Workflow
+  #   max_build_duration: 60
+  #   environment:
+  #     flutter: default
+  #     xcode: latest
+  #     cocoapods: default
+  #   scripts:
+  #     - |
+  #       # set up debug keystore
+  #       rm -f ~/.android/debug.keystore
+  #       keytool -genkeypair \
+  #         -alias androiddebugkey \
+  #         -keypass android \
+  #         -keystore ~/.android/debug.keystore \
+  #         -storepass android \
+  #         -dname 'CN=Android Debug,O=Android,C=US' \
+  #         -keyalg 'RSA' \
+  #         -keysize 2048 \
+  #         -validity 10000
+  #     - |
+  #       # set up local properties
+  #       echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
+  #     - flutter packages pub get
+  #     - flutter build appbundle --debug
+  #     - find . -name "Podfile" -execdir pod install \;
+  #     - flutter build ios --debug --no-codesign
+  #   artifacts:
+  #     - build/**/outputs/apk/**/*.apk
+  #     - build/**/outputs/bundle/**/*.aab
+  #     - build/**/outputs/**/mapping.txt
+  #     - build/ios/ipa/*.ipa
+  #     - /tmp/xcodebuild_logs/*.log
+  #     - build/windows/**/*.msix
+  #     - flutter_drive.log
+    # triggering:
+    #   events:
+    #     - push
+    #   branch_patterns:
+    #     - pattern: *
+    #     - pattern: develop
+    #       include: false
+    #   cancel_previous_builds: true
+    # publishing:
+    #   email:
+    #     recipients:
+    #       - nilotpal@digitalprizm.net

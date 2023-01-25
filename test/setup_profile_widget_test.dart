@@ -1,0 +1,33 @@
+// This is a basic Flutter widget test.
+//
+// To perform an interaction with a widget in your test, use the WidgetTester
+// utility that Flutter provides. For example, you can send tap and scroll
+// gestures. You can also use WidgetTester to find child widgets in the widget
+// tree, read text, and verify that the values of widget properties are correct.
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import 'package:pumpkin/main.dart';
+import 'package:pumpkin/screens/authentication/confirm_email_screen.dart';
+import 'package:pumpkin/screens/authentication/confirm_mobile_screen.dart';
+import 'package:pumpkin/screens/authentication/enter_mobile_number_screen.dart';
+import 'package:pumpkin/screens/authentication/signup_screen.dart';
+import 'package:pumpkin/screens/profile/setup_profile_screen.dart';
+
+void main() {
+  testWidgets('setup profile widget test', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const MaterialApp(home: SetupProfileScreen()));
+
+    // Verify widgets
+    expect(find.byKey(const Key("next")), findsOneWidget);
+    expect(find.byKey(const Key("Message")), findsOneWidget);
+    expect(find.byKey(const Key("email")), findsOneWidget);
+    expect(find.byKey(const Key("phone")), findsOneWidget);
+    expect(find.byKey(const Key("dateOfBirth")), findsOneWidget);
+    expect(find.byKey(const Key("last name")), findsOneWidget);
+    expect(find.byKey(const Key("first name")), findsOneWidget);
+    await tester.pump();
+  });
+}

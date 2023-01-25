@@ -1,0 +1,114 @@
+{
+  "project_info": {
+    "project_number": "272714461242",
+    "project_id": "pumpkinlab-7a492",
+    "storage_bucket": "pumpkinlab-7a492.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272714461242:android:646d16dd0a873419010503",
+        "android_client_info": {
+          "package_name": "com.pumpkin.io"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272714461242-04mqc5264jvoe09cghgtu6cuioa1jb6u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pumpkin.io",
+            "certificate_hash": "8c9d95e92fbb392ae5e5fd849e9a3dfd34b34ac8"
+          }
+        },
+        {
+          "client_id": "272714461242-rrd8no2vbhvv2a8bh2v5tkrp0isoebll.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pumpkin.io",
+            "certificate_hash": "1f200be652481c9139ac83cd589b31698ff3585e"
+          }
+        },
+        {
+          "client_id": "272714461242-sr6nnnqo9rcj3jg8ncknlglk9hmulf6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxtEEqAxJQ_xnMehZIIfscYuHgq5ZAr7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272714461242-sr6nnnqo9rcj3jg8ncknlglk9hmulf6a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "272714461242-c3d2b6t44v4m6f2ag58e64eb2gqvghoq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pumpkin.io"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272714461242:android:1f55893fd33d826e010503",
+        "android_client_info": {
+          "package_name": "com.pumpkinlab.io"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272714461242-nhdav5ksf359lpa5kfsud52pdska0vjc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pumpkinlab.io",
+            "certificate_hash": "1f200be652481c9139ac83cd589b31698ff3585e"
+          }
+        },
+        {
+          "client_id": "272714461242-pir8rrrn60dk1sm4diq1rl0ul8ui6pdo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pumpkinlab.io",
+            "certificate_hash": "8c9d95e92fbb392ae5e5fd849e9a3dfd34b34ac8"
+          }
+        },
+        {
+          "client_id": "272714461242-sr6nnnqo9rcj3jg8ncknlglk9hmulf6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxtEEqAxJQ_xnMehZIIfscYuHgq5ZAr7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272714461242-sr6nnnqo9rcj3jg8ncknlglk9hmulf6a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "272714461242-c3d2b6t44v4m6f2ag58e64eb2gqvghoq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pumpkin.io"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

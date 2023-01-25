@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pumpkin</string>
+    <string name="facebook_app_id">512468550828328</string>
+    <string name="fb_login_protocol_scheme">fb512468550828328</string>
+    <string name="facebook_client_token">88079ca2ffa911616f9d608795d0dd30</string>
+</resources>
