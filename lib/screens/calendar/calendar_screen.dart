@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pumpkin/screens/calendar/calendar_utils.dart';
-import 'package:intl/intl.dart';
 import 'package:pumpkin/theme.dart';
 import 'package:pumpkin/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,6 +24,10 @@ class _CalendarScreenState extends State<CalendarScreen>
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
+
+  final List<String>? _choices = ['A', 'B', 'C', 'D'];
+  int? _choiceIndex;
+
   late TabController tabController;
   late Animation<double> _animation;
   late AnimationController _animationController;
@@ -35,6 +38,9 @@ class _CalendarScreenState extends State<CalendarScreen>
 
   @override
   void initState() {
+
+    _choiceIndex = 0;
+
     tabController = TabController(initialIndex: 2, length: 3, vsync: this)
       ..addListener(() {
         setState(() {});
@@ -322,7 +328,7 @@ class _CalendarScreenState extends State<CalendarScreen>
                                   backgroundColor: AppColors.profileIconBG,
                                   //backgroundImage: const AssetImage("assets/images/avater.jpeg"),
                                   child: SvgPicture.asset(
-                                    'assets/icons/accounts.svg',
+                                    'assets/icons/birthday.svg',
                                   )),
                               trailing: Text('All-Day',
                                   style: defaultTheme.textTheme.titleSmall),
@@ -342,7 +348,8 @@ class _CalendarScreenState extends State<CalendarScreen>
                                       horizontal: 16, vertical: 16),
                                   child: Column(
                                     children: [
-                                      Text('Hello'),
+                                      chipList(),
+                                      // _buildChoiceChips(),
                                     ],
                                   ),
                                 ),
@@ -362,5 +369,68 @@ class _CalendarScreenState extends State<CalendarScreen>
       ),
     );
   }
+
+  Widget _buildChoiceChips() {
+    return Container(
+      height: MediaQuery.of(context).size.height/4,
+      child: ListView.builder(
+        itemCount: _choices!.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ChoiceChip(
+            label: Text(_choices![index]),
+            selected: _choiceIndex == index,
+            selectedColor: Colors.red,
+            onSelected: (bool selected) {
+              setState(() {
+                _choiceIndex = selected ? index : 0;
+              });
+            },
+            backgroundColor: Colors.green,
+            labelStyle: TextStyle(color: Colors.white),
+          );
+        },
+      ),
+    );
+  }
+
+
+  Widget _buildChip(String label) {
+    return Chip(
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+      labelPadding: const EdgeInsets.all(3.0),
+      // avatar: CircleAvatar(
+      //   backgroundColor: AppColors.dividerColor,
+      //   child: Text(label[0].toUpperCase()),
+      // ),
+      label: Text(
+        label,
+        style: const TextStyle(
+          color: AppColors.primaryColor,
+        ),
+      ),
+      backgroundColor: AppColors.primaryColor.withOpacity(.1),
+      elevation: 0.5,
+      shadowColor: Colors.grey[60],
+      padding: const EdgeInsets.all(8.0),
+    );
+  }
+
+  Widget chipList() {
+    return Wrap(
+      spacing: 6.0,
+      runSpacing: 6.0,
+      children: <Widget>[
+        _buildChip('Jon'),
+        _buildChip('Suvo'),
+        _buildChip('Team'),
+        _buildChip('Racer'),
+        _buildChip('Traveller'),
+        _buildChip('Jon'),
+        _buildChip('Suvo'),
+      ],
+    );
+  }
+
+
 
 }
