@@ -110,55 +110,59 @@ class _CalendarScreenState extends State<CalendarScreen>
     return Scaffold(
         backgroundColor: AppColors.setupProfileBG,
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                const SizedBox(height: 25),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeOut,
-                        );
-                        focusedDay =
-                            focusedDay.subtract(const Duration(days: 30));
-                      },
-                      child: const Icon(
-                        Icons.arrow_back_ios_sharp,
-                        color: AppColors.darkIconcolor,
-                        size: 24,
-                      ),
+                    const SizedBox(height: 25),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            pageController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut,
+                            );
+                            focusedDay =
+                                focusedDay.subtract(const Duration(days: 30));
+                          },
+                          child: const Icon(
+                            Icons.arrow_back_ios_sharp,
+                            color: AppColors.darkIconcolor,
+                            size: 24,
+                          ),
+                        ),
+                        Text('December 2022',
+                            style: defaultTheme.textTheme.subtitle1),
+                        InkWell(
+                          onTap: () {
+                            pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut,
+                            );
+                            focusedDay =
+                                focusedDay.add(const Duration(days: 30));
+                          },
+                          child: const Icon(
+                            Icons.arrow_forward_ios_sharp,
+                            color: AppColors.darkIconcolor,
+                            size: 24,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text('December 2022',
-                        style: defaultTheme.textTheme.subtitle1),
-                    InkWell(
-                      onTap: () {
-                        pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeOut,
-                        );
-                        focusedDay = focusedDay.add(const Duration(days: 30));
-                      },
-                      child: const Icon(
-                        Icons.arrow_forward_ios_sharp,
-                        color: AppColors.darkIconcolor,
-                        size: 24,
-                      ),
-                    ),
+                    const SizedBox(height: 18),
+                    tabWidget(),
+                    calenderWidget(),
                   ],
                 ),
-                const SizedBox(height: 18),
-                tabWidget(),
-                calenderWidget(),
-                const SizedBox(height: 8.0),
-                eventWidget(),
-                const SizedBox(height: 8.0),
-              ],
-            ),
+              ),
+              const SizedBox(height: 8.0),
+              eventWidget(),
+            ],
           ),
         ));
   }
@@ -185,14 +189,11 @@ class _CalendarScreenState extends State<CalendarScreen>
                 indicatorColor: AppColors.white,
                 controller: tabController,
                 indicatorSize: TabBarIndicatorSize.tab,
-
                 indicator: BoxDecoration(
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 labelPadding: EdgeInsets.zero,
-
-
                 tabs: [
                   Tab(
                     iconMargin: EdgeInsets.zero,
@@ -245,8 +246,6 @@ class _CalendarScreenState extends State<CalendarScreen>
       shouldFillViewport: false,
       onCalendarCreated: (controller) => pageController = controller,
       headerVisible: false,
-
-
       calendarStyle: CalendarStyle(
           todayTextStyle: TextStyle(
               fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
@@ -254,32 +253,72 @@ class _CalendarScreenState extends State<CalendarScreen>
   }
 
   Widget eventWidget() {
-    return  Expanded(
-      child: ValueListenableBuilder<List<Event>>(
-        valueListenable: _selectedEvents,
-        builder: (context, value, _) {
-          return ListView.builder(
-            itemCount: value.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 0.0,
-                  vertical: 4.0,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: ListTile(
-                  onTap: () => print('${value[index]}'),
-                  title: Text('${value[index]}'),
-                ),
-              );
-            },
-          );
-        },
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        decoration: const BoxDecoration(
+            color: AppColors.fillColor,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+        child: ValueListenableBuilder<List<Event>>(
+          valueListenable: _selectedEvents,
+          builder: (context, value, _) {
+            return ListView.builder(
+              itemCount: value.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 0.0,
+                    vertical: 4.0,
+                  ),
+                  // child: ListTile(
+                  //   onTap: () => print('${value[index]}'),
+                  //   title: Text('${value[index]}'),
+                  // ),
+                  child: Column(
+                    children: [
+                      ExpansionTile(
+                        leading: CircleAvatar(
+                            radius: 22,
+                            backgroundColor: AppColors.profileIconBG,
+                            //backgroundImage: const AssetImage("assets/images/avater.jpeg"),
+                            child: SvgPicture.asset(
+                              'assets/icons/accounts.svg',
+                            )),
+                        trailing: Text('All-Day',
+                            style: defaultTheme.textTheme.titleSmall),
+                        title: Text(
+                          'Wish them a Happy Birthday!',
+                          style: defaultTheme.textTheme.titleMedium,
+                          maxLines: 3,
+                        ),
+                        backgroundColor: Colors.transparent,
+                        collapsedIconColor: Colors.transparent,
+                        collapsedBackgroundColor: Colors.transparent,
+                        iconColor: Colors.transparent,
+                        tilePadding: EdgeInsets.all(0),
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                            child: Column(
+                              children: [
+                                Text('Hello'),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Divider(),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
-
 }
