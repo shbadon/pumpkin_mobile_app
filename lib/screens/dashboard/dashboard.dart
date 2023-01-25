@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:pumpkin/controllers/get_controllers.dart';
+import 'package:pumpkin/screens/calendar/calendar_screen.dart';
 import 'package:pumpkin/screens/leads/leads%20_list_screen.dart';
 import 'package:pumpkin/screens/profile/my_profile_screen.dart';
 import 'package:pumpkin/theme.dart';
@@ -109,19 +110,7 @@ class Dashboard extends StatelessWidget {
       case 2:
         return const LeadsListScreen();
       case 3:
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: Text(
-                'Calendar page under construction...',
-                textAlign: TextAlign.center,
-                style: defaultTheme.textTheme.headline1!
-                    .copyWith(overflow: TextOverflow.visible),
-              ),
-            ),
-          ],
-        );
+        return CalendarScreen();
       case 4:
         return const MyProfileScreen();
       default:
