@@ -39,3 +39,10 @@ String formatDate(String date, String format) {
 
 String dateFormat1 = "dd-MM-yyyy";
 String dateFormat2 = "yyyy-MM-dd";
+
+String formatDateToDDEEEE(String date) {
+  DateTime dateToConvert = DateTime.parse(date);
+  final DateFormat formatter = DateFormat('dd. EEEE');
+  final String formatted = formatter.format(dateToConvert);
+  return formatted;
+}

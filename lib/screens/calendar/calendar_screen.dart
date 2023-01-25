@@ -162,7 +162,7 @@ class _CalendarScreenState extends State<CalendarScreen>
               tabWidget(),
               const SizedBox(height: 16),
               calenderWidget(),
-              const SizedBox(height: 8.0),
+              const SizedBox(height: 16.0),
               eventWidget(),
               const SizedBox(height: 8.0),
             ],
@@ -284,68 +284,80 @@ class _CalendarScreenState extends State<CalendarScreen>
   Widget eventWidget() {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.all(24),
         decoration: const BoxDecoration(
             color: AppColors.fillColor,
-            shape: BoxShape.rectangle,
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-        child: ValueListenableBuilder<List<Event>>(
-          valueListenable: _selectedEvents,
-          builder: (context, value, _) {
-            return ListView.builder(
-              itemCount: value.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 0.0,
-                    vertical: 4.0,
-                  ),
-                  // child: ListTile(
-                  //   onTap: () => print('${value[index]}'),
-                  //   title: Text('${value[index]}'),
-                  // ),
-                  child: Column(
-                    children: [
-                      ExpansionTile(
-                        leading: CircleAvatar(
-                            radius: 22,
-                            backgroundColor: AppColors.profileIconBG,
-                            //backgroundImage: const AssetImage("assets/images/avater.jpeg"),
-                            child: SvgPicture.asset(
-                              'assets/icons/accounts.svg',
-                            )),
-                        trailing: Text('All-Day',
-                            style: defaultTheme.textTheme.titleSmall),
-                        title: Text(
-                          'Wish them a Happy Birthday!',
-                          style: defaultTheme.textTheme.titleMedium,
-                          maxLines: 3,
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              formatDateToDDEEEE(focusedDay.toString()),
+              style: defaultTheme.textTheme.titleMedium,
+              maxLines: 3,
+            ),
+            const SizedBox(height: 16.0),
+            Expanded(
+              child: ValueListenableBuilder<List<Event>>(
+                valueListenable: _selectedEvents,
+                builder: (context, value, _) {
+                  return ListView.builder(
+                    itemCount: value.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 0.0,
+                          vertical: 4.0,
                         ),
-                        backgroundColor: Colors.transparent,
-                        collapsedIconColor: Colors.transparent,
-                        collapsedBackgroundColor: Colors.transparent,
-                        iconColor: Colors.transparent,
-                        tilePadding: EdgeInsets.all(0),
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 16),
-                            child: Column(
-                              children: [
-                                Text('Hello'),
+                        // child: ListTile(
+                        //   onTap: () => print('${value[index]}'),
+                        //   title: Text('${value[index]}'),
+                        // ),
+                        child: Column(
+                          children: [
+                            ExpansionTile(
+                              leading: CircleAvatar(
+                                  radius: 22,
+                                  backgroundColor: AppColors.profileIconBG,
+                                  //backgroundImage: const AssetImage("assets/images/avater.jpeg"),
+                                  child: SvgPicture.asset(
+                                    'assets/icons/accounts.svg',
+                                  )),
+                              trailing: Text('All-Day',
+                                  style: defaultTheme.textTheme.titleSmall),
+                              title: Text(
+                                'Wish them a Happy Birthday!',
+                                style: defaultTheme.textTheme.titleMedium,
+                                maxLines: 3,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              collapsedIconColor: Colors.transparent,
+                              collapsedBackgroundColor: Colors.transparent,
+                              iconColor: Colors.transparent,
+                              tilePadding: EdgeInsets.all(0),
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 16),
+                                  child: Column(
+                                    children: [
+                                      Text('Hello'),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                      Divider(),
-                    ],
-                  ),
-                );
-              },
-            );
-          },
+                            Divider(),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
