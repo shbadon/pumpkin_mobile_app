@@ -110,7 +110,7 @@ class Dashboard extends StatelessWidget {
       case 2:
         return const LeadsListScreen();
       case 3:
-        return CalendarScreen();
+        return const CalendarScreen();
       case 4:
         return const MyProfileScreen();
       default:
