@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pumpkin/screens/calendar/calendar_utils.dart';
+import 'package:intl/intl.dart';
 import 'package:pumpkin/theme.dart';
 import 'package:pumpkin/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -33,6 +34,7 @@ class _CalendarScreenState extends State<CalendarScreen>
   late AnimationController _animationController;
   PageController pageController = PageController();
   DateTime focusedDay = DateTime.now();
+  DateTime selectedDay = DateTime.now();
   ValueNotifier<String> headerText =
       ValueNotifier(formatDateToMMMMYYYY(DateTime.now().toString()));
 
@@ -249,6 +251,20 @@ class _CalendarScreenState extends State<CalendarScreen>
   }
 
   Widget calenderWidget() {
+    switch (tabController.index) {
+      case 0:
+        return dayCalenderWidget();
+      case 1:
+        return weekCalenderWidget();
+      case 2:
+        return monthCalenderWidget();
+
+      default:
+        return const Offstage();
+    }
+  }
+
+  Widget monthCalenderWidget() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 17),
       padding: const EdgeInsets.only(left: 8, right: 8, top: 26, bottom: 8),
@@ -257,6 +273,60 @@ class _CalendarScreenState extends State<CalendarScreen>
       child: TableCalendar(
         firstDay: DateTime.utc(2010, 10, 20),
         lastDay: DateTime.utc(2040, 10, 20),
+        eventLoader:(day) {
+          return [day];
+        },
+        focusedDay: focusedDay,
+        daysOfWeekVisible: true,
+        sixWeekMonthsEnforced: false,
+        shouldFillViewport: false,
+        onCalendarCreated: (controller) => pageController = controller,
+        headerVisible: false,
+        availableGestures: AvailableGestures.all,
+        onPageChanged: (focusedDay) {
+          headerText.value = formatDateToMMMMYYYY(focusedDay.toString());
+        },
+        calendarStyle: CalendarStyle(
+          todayTextStyle: defaultTheme.textTheme.bodyText1!
+              .copyWith(color: AppColors.black80),
+          todayDecoration: BoxDecoration(
+            color: AppColors.orange.withOpacity(0.19),
+            shape: BoxShape.circle,
+          ),
+          selectedDecoration: const BoxDecoration(
+            color: AppColors.orange,
+            shape: BoxShape.circle,
+          ),
+          weekendTextStyle: defaultTheme.textTheme.bodyText2!
+              .copyWith(color: AppColors.textFieldTitleColor),
+          isTodayHighlighted: true,
+        ),
+        selectedDayPredicate: (day) {
+          return isSameDay(
+            day,
+            selectedDay,
+          );
+        },
+        onDaySelected: (selectedDay, focusedDay) {
+          setState(() {
+            this.selectedDay = selectedDay;
+            this.focusedDay = selectedDay;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget weekCalenderWidget() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 17),
+      padding: const EdgeInsets.only(left: 8, right: 8, top: 26, bottom: 8),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16), color: AppColors.white),
+      child: TableCalendar(
+        firstDay: DateTime.utc(2010, 10, 20),
+        lastDay: DateTime.utc(2040, 10, 20),
+        calendarFormat: CalendarFormat.week,
         focusedDay: focusedDay,
         daysOfWeekVisible: true,
         sixWeekMonthsEnforced: false,
@@ -277,12 +347,41 @@ class _CalendarScreenState extends State<CalendarScreen>
             color: AppColors.orange.withOpacity(0.19),
             shape: BoxShape.circle,
           ),
+          selectedDecoration: const BoxDecoration(
+            color: AppColors.orange,
+            shape: BoxShape.circle,
+          ),
+          weekendTextStyle: defaultTheme.textTheme.bodyText2!
+              .copyWith(color: AppColors.textFieldTitleColor),
           isTodayHighlighted: true,
         ),
-        onDaySelected: (selectedDay, focusedDay) {
-          print(selectedDay);
-          print(focusedDay);
+        selectedDayPredicate: (day) {
+          return isSameDay(
+            day,
+            selectedDay,
+          );
         },
+        onDaySelected: (selectedDay, focusedDay) {
+          setState(() {
+            this.selectedDay = selectedDay;
+            this.focusedDay = selectedDay;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget dayCalenderWidget() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 17),
+      padding: const EdgeInsets.symmetric(vertical: 50),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16), color: AppColors.white),
+      alignment: Alignment.center,
+      child: Text(
+        formatDateToEEEEdd(focusedDay.toString()),
+        style: defaultTheme.textTheme.headline2!
+            .copyWith(color: AppColors.bottomNavigationBarUnselectedLabelColor),
       ),
     );
   }
