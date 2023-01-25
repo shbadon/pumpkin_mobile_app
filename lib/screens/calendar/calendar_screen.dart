@@ -110,53 +110,55 @@ class _CalendarScreenState extends State<CalendarScreen>
     return Scaffold(
         backgroundColor: AppColors.setupProfileBG,
         body: SafeArea(
-          child: ListView(
+          child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            children: [
-              const SizedBox(height: 25),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      pageController.previousPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeOut,
-                      );
-                      focusedDay =
-                          focusedDay.subtract(const Duration(days: 30));
-                    },
-                    child: const Icon(
-                      Icons.arrow_back_ios_sharp,
-                      color: AppColors.darkIconcolor,
-                      size: 24,
+            child: Column(
+              children: [
+                const SizedBox(height: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        pageController.previousPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeOut,
+                        );
+                        focusedDay =
+                            focusedDay.subtract(const Duration(days: 30));
+                      },
+                      child: const Icon(
+                        Icons.arrow_back_ios_sharp,
+                        color: AppColors.darkIconcolor,
+                        size: 24,
+                      ),
                     ),
-                  ),
-                  Text('December 2022',
-                      style: defaultTheme.textTheme.subtitle1),
-                  InkWell(
-                    onTap: () {
-                      pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeOut,
-                      );
-                      focusedDay = focusedDay.add(const Duration(days: 30));
-                    },
-                    child: const Icon(
-                      Icons.arrow_forward_ios_sharp,
-                      color: AppColors.darkIconcolor,
-                      size: 24,
+                    Text('December 2022',
+                        style: defaultTheme.textTheme.subtitle1),
+                    InkWell(
+                      onTap: () {
+                        pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeOut,
+                        );
+                        focusedDay = focusedDay.add(const Duration(days: 30));
+                      },
+                      child: const Icon(
+                        Icons.arrow_forward_ios_sharp,
+                        color: AppColors.darkIconcolor,
+                        size: 24,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 18),
-              tabWidget(),
-              calenderWidget(),
-              const SizedBox(height: 8.0),
-              eventWidget(),
-              const SizedBox(height: 8.0),
-            ],
+                  ],
+                ),
+                const SizedBox(height: 18),
+                tabWidget(),
+                calenderWidget(),
+                const SizedBox(height: 8.0),
+                eventWidget(),
+                const SizedBox(height: 8.0),
+              ],
+            ),
           ),
         ));
   }
@@ -261,7 +263,7 @@ class _CalendarScreenState extends State<CalendarScreen>
             itemBuilder: (context, index) {
               return Container(
                 margin: const EdgeInsets.symmetric(
-                  horizontal: 12.0,
+                  horizontal: 0.0,
                   vertical: 4.0,
                 ),
                 decoration: BoxDecoration(
